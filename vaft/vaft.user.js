@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         TwitchAdSolutions 日本語版 (vaft)
 // @namespace    https://github.com/ChihaluCoding/TwitchAdSolutions_Japanese
-// @version      68.6.0
+// @version      68.7.0
 // @description  Multiple solutions for blocking Twitch ads (vaft)
 // @updateURL    https://github.com/ChihaluCoding/TwitchAdSolutions_Japanese/raw/main/vaft/vaft.user.js
 // @downloadURL  https://github.com/ChihaluCoding/TwitchAdSolutions_Japanese/raw/main/vaft/vaft.user.js
@@ -46,7 +46,7 @@
         }
     }
     'use strict';
-    const ourTwitchAdSolutionsVersion = 88;// 古いバージョンのスクリプトとの競合を防ぐために使う
+    const ourTwitchAdSolutionsVersion = 89;// 古いバージョンのスクリプトとの競合を防ぐために使う
     console.log('[AD DEBUG] TwitchAdSolutions vaft v' + ourTwitchAdSolutionsVersion + ' を読み込んでいます');
     if (typeof window.twitchAdSolutionsVersion !== 'undefined' && window.twitchAdSolutionsVersion >= ourTwitchAdSolutionsVersion) {
         console.log('[AD DEBUG] 競合: vaft v' + ourTwitchAdSolutionsVersion + ' をスキップしました — 別のスクリプトがすでに有効です（v' + window.twitchAdSolutionsVersion + '）。重複するスクリプトを削除してください。');
@@ -165,6 +165,7 @@
             IsMidroll: false,
             AdBreakStartedAt: 0,
             PodLength: 1,
+            PodDurationSec: 0,// 今回の広告の想定の総尺（秒）— バナーの残り時間の表示に使う
             HasConfirmedAdAttrs: false,
             CleanPlaylistCount: 0,
             PendingAdEndAt: 0,// 今回の広告で最初にクリーンなポーリングを観測した時刻 — 揺れに強い最大待機の判定を制御する（TTV-AB v6.6.7 の #1 / #4）
@@ -1164,12 +1165,30 @@
                 streamInfo.LastCommittedBackupPlayerType = null;
                 streamInfo.FreezeStartedAt = 0;
                 streamInfo.CsaiOnlyThisBreak = false;// 新しい広告のためにスティッキー CSAI のフラグをリセットする
-                console.log('[AD DEBUG] 広告を検出 — 種別: ' + (streamInfo.IsMidroll ? 'midroll' : 'preroll') + '、チャンネル: ' + streamInfo.ChannelName + '、ポッド: ' + podLength + ' 本（想定 約' + (podLength * 30) + '秒）、シグニファイア: ' + getMatchedAdSignifiers(textStr).join(', '));
+                // 広告の総尺を求める。m3u8 に X-TV-TWITCH-AD-DURATION があればその合計を使い、
+                // 無ければ 1 本 30 秒として概算する（Twitch の広告は 30 秒が基本）。
+                let podDurationSec = 0;
+                const durationMatches = [...textStr.matchAll(/X-TV-TWITCH-AD-DURATION="?(\d+(?:\.\d+)?)"?/g)];
+                for (let d = 0; d < durationMatches.length; d++) {
+                    podDurationSec += parseFloat(durationMatches[d][1]) || 0;
+                }
+                // ポッド内の広告は 1 本ずつ開示されるため、この時点では先頭の 1 本しか見えないことがある。
+                // 開示済みの本数がポッド全体に満たない場合は、残りを平均尺で補う。
+                if (podDurationSec > 0 && durationMatches.length > 0 && durationMatches.length < podLength) {
+                    podDurationSec = (podDurationSec / durationMatches.length) * podLength;
+                }
+                if (podDurationSec <= 0) {
+                    podDurationSec = podLength * 30;
+                }
+                streamInfo.PodDurationSec = Math.round(podDurationSec);
+                console.log('[AD DEBUG] 広告を検出 — 種別: ' + (streamInfo.IsMidroll ? 'midroll' : 'preroll') + '、チャンネル: ' + streamInfo.ChannelName + '、ポッド: ' + podLength + ' 本（想定 約' + streamInfo.PodDurationSec + '秒' + (durationMatches.length > 0 ? '、m3u8 の DURATION による' : '、1 本 30 秒として概算') + '）、シグニファイア: ' + getMatchedAdSignifiers(textStr).join(', '));
                 postMessage({
                     key: 'UpdateAdBlockBanner',
                     isMidroll: streamInfo.IsMidroll,
                     hasAds: streamInfo.IsShowingAd,
-                    isStrippingAdSegments: false
+                    isStrippingAdSegments: false,
+                    adBreakStartedAt: streamInfo.AdBreakStartedAt,
+                    podDurationSec: streamInfo.PodDurationSec
                 });
             }
             // 広告ありのポーリングのたびに広告完了をスプーフする（広告の開始時だけではない）。Twitch は
@@ -1270,7 +1289,9 @@
                     hasAds: streamInfo.IsShowingAd,
                     isStrippingAdSegments: streamInfo.IsStrippingAdSegments,
                     numStrippedAdSegments: streamInfo.NumStrippedAdSegments,
-                    activeBackupPlayerType: null
+                    activeBackupPlayerType: null,
+                    adBreakStartedAt: streamInfo.AdBreakStartedAt,
+                    podDurationSec: streamInfo.PodDurationSec
                 });
                 return textStr;
             }
@@ -1303,7 +1324,9 @@
                     hasAds: streamInfo.IsShowingAd,
                     isStrippingAdSegments: streamInfo.IsStrippingAdSegments,
                     numStrippedAdSegments: streamInfo.NumStrippedAdSegments,
-                    activeBackupPlayerType: null
+                    activeBackupPlayerType: null,
+                    adBreakStartedAt: streamInfo.AdBreakStartedAt,
+                    podDurationSec: streamInfo.PodDurationSec
                 });
                 return textStr;
             }
@@ -1791,7 +1814,9 @@
             hasAds: streamInfo.IsShowingAd,
             isStrippingAdSegments: streamInfo.IsStrippingAdSegments,
             numStrippedAdSegments: streamInfo.NumStrippedAdSegments,
-            activeBackupPlayerType: streamInfo.ActiveBackupPlayerType
+            activeBackupPlayerType: streamInfo.ActiveBackupPlayerType,
+            adBreakStartedAt: streamInfo.AdBreakStartedAt,
+            podDurationSec: streamInfo.PodDurationSec
         });
         return textStr;
     }
@@ -2318,6 +2343,29 @@
             }
         }
     }
+    // バナーに表示する残り時間の状態。ワーカーからの通知は数秒おきのため、
+    // 毎秒のタイマーで別途カウントダウンを描画する。
+    let adBannerState = { text: '', startedAt: 0, durationSec: 0 };
+    let adBannerTimer = null;
+    function formatAdRemaining() {
+        if (!adBannerState.startedAt || !adBannerState.durationSec) return '';
+        const elapsed = (Date.now() - adBannerState.startedAt) / 1000;
+        const remaining = Math.ceil(adBannerState.durationSec - elapsed);
+        // 想定を超えた場合（ポッドの尺が伸びた、復帰に手間取っている等）は
+        // 誤った残り時間を出さず、経過時間の表示に切り替える。
+        if (remaining <= 0) {
+            return '（想定を超過 ' + Math.floor(elapsed) + '秒経過）';
+        }
+        const m = Math.floor(remaining / 60);
+        const s = remaining % 60;
+        return '（残り約 ' + (m > 0 ? m + '分' + String(s).padStart(2, '0') + '秒' : s + '秒') + '）';
+    }
+    function renderAdBanner() {
+        const div = cachedPlayerRootDiv && cachedPlayerRootDiv.isConnected
+            ? cachedPlayerRootDiv.querySelector('.tas-adblock-overlay') : null;
+        if (!div || !div.P) return;
+        div.P.textContent = adBannerState.text + formatAdRemaining();
+    }
     function updateAdblockBanner(data) {
         if (!cachedPlayerRootDiv || !cachedPlayerRootDiv.isConnected) {
             cachedPlayerRootDiv = document.querySelector('.video-player');
@@ -2336,8 +2384,21 @@
             }
             if (adBlockDiv != null) {
                 isActivelyStrippingAds = data.isStrippingAdSegments;
-                adBlockDiv.P.textContent = (data.isMidroll ? 'ミッドロール' : '') + '広告をブロック中' + (data.isStrippingAdSegments ? '（除去中）' : '') + (data.activeBackupPlayerType ? '（' + data.activeBackupPlayerType + '）' : '');// + (data.numStrippedAdSegments > 0 ? ` (${data.numStrippedAdSegments})` : '');
-                adBlockDiv.style.display = data.hasAds && playerBufferState.isLive ? 'block' : 'none';
+                adBannerState.text = (data.isMidroll ? 'ミッドロール' : '') + '広告をブロック中' + (data.isStrippingAdSegments ? '（除去中）' : '') + (data.activeBackupPlayerType ? '（' + data.activeBackupPlayerType + '）' : '');// + (data.numStrippedAdSegments > 0 ? ` (${data.numStrippedAdSegments})` : '');
+                adBannerState.startedAt = data.adBreakStartedAt || 0;
+                adBannerState.durationSec = data.podDurationSec || 0;
+                const visible = data.hasAds && playerBufferState.isLive;
+                adBlockDiv.style.display = visible ? 'block' : 'none';
+                renderAdBanner();
+                // 広告中だけ毎秒の更新を回し、終わったら止める
+                if (visible && adBannerState.durationSec > 0) {
+                    if (!adBannerTimer) {
+                        adBannerTimer = setInterval(renderAdBanner, 1000);
+                    }
+                } else if (adBannerTimer) {
+                    clearInterval(adBannerTimer);
+                    adBannerTimer = null;
+                }
             }
             if (data.hasAds) {
                 hideTwitchAdOverlays();
