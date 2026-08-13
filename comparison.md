@@ -1,122 +1,122 @@
-*English / [日本語](comparison.ja.md)*
+*[English](comparison.md) / 日本語*
 
-# Feature Comparison
+# 機能比較
 
-Comparison of ryanbr/TwitchAdSolutions (release & testing) vs GosuDRM/TTV-AB 6.0.7 vs pixeltris/TwitchAdSolutions (archived).
+ryanbr/TwitchAdSolutions（release と testing）、GosuDRM/TTV-AB 6.0.7、pixeltris/TwitchAdSolutions（アーカイブ済み）の比較です。
 
-## Ad Detection
+## 広告の検出
 
-| Feature | Release | Testing | TTV-AB | pixeltris |
+| 機能 | Release | Testing | TTV-AB | pixeltris |
 |---|---|---|---|---|
-| Multiple ad signifiers | Yes (4) | Yes (4) | No (1 + URL patterns) | No (1) |
-| Unknown-signifier diagnostic | Yes | Yes | No | No |
-| SCTE-35 CUE-OUT/CUE-IN | Yes | Yes | Yes | No |
-| Ad segment URL patterns | Yes | Yes | Yes | No |
+| 複数の広告シグニファイア | あり（4 種） | あり（4 種） | なし（1 種 + URL パターン） | なし（1 種） |
+| 未知のシグニファイアの診断ログ | あり | あり | なし | なし |
+| SCTE-35 CUE-OUT / CUE-IN | あり | あり | あり | なし |
+| 広告セグメントの URL パターン | あり | あり | あり | なし |
 
-## Backup Stream
+## バックアップストリーム
 
-| Feature | Release | Testing | TTV-AB | pixeltris |
+| 機能 | Release | Testing | TTV-AB | pixeltris |
 |---|---|---|---|---|
-| Backup-swap-first on ad detect (TTV-AB-style) | Yes (default, opt-out) | Yes (default, opt-out) | Yes (always on) | No |
-| Backup player type cycling | Yes | Yes | Yes | Yes |
-| Failed backup type tracking | Yes | Yes | Yes | No |
-| Pinned backup type | Yes (default on) | Yes (default on) | Yes (always on) | No |
-| Auto-pin source quality | Yes | Yes | No | No |
-| Segment recovery cache | Yes | Yes | Yes | No |
-| Embed player type reliability | Skipped as first-try (GQL "server error") | Skipped as first-try | Works (extension privileges) | Works |
+| 広告検出時にバックアップ切り替えを優先（TTV-AB 方式） | あり（デフォルト有効、無効化可） | あり（デフォルト有効、無効化可） | あり（常時有効） | なし |
+| バックアップのプレイヤータイプの巡回 | あり | あり | あり | あり |
+| 失敗したバックアップタイプの記録 | あり | あり | あり | なし |
+| バックアップタイプの固定 | あり（デフォルト有効） | あり（デフォルト有効） | あり（常時有効） | なし |
+| ソース画質の自動固定 | あり | あり | なし | なし |
+| セグメント復旧キャッシュ | あり | あり | あり | なし |
+| embed プレイヤータイプの信頼性 | 最初の候補からは除外（GQL の "server error"） | 最初の候補からは除外 | 動作する（拡張機能の権限） | 動作する |
 
-## Ad Recovery
+## 広告からの復帰
 
-| Feature | Release | Testing | TTV-AB | pixeltris |
+| 機能 | Release | Testing | TTV-AB | pixeltris |
 |---|---|---|---|---|
-| Ad-end grace period | Yes | Yes | Yes | No |
-| Dead backup detection | Yes | Yes | No | No |
-| Post-ad resume retry | Yes | Yes | Yes | No |
-| Muted state restore | Yes | Yes | Yes | No |
-| Respect user mute intent | Yes | Yes | No | No |
-| Post-hard-reload seek-to-live (drift >5s) | Yes | Yes | No | No |
-| Player error auto-recovery | No | Yes | Yes | No |
+| 広告終了後の猶予期間 | あり | あり | あり | なし |
+| 停止したバックアップの検出 | あり | あり | なし | なし |
+| 広告後の再生再開リトライ | あり | あり | あり | なし |
+| ミュート状態の復元 | あり | あり | あり | なし |
+| ユーザーのミュート意図の尊重 | あり | あり | なし | なし |
+| ハード再読み込み後のライブへのシーク（ずれ 5 秒超） | あり | あり | なし | なし |
+| プレイヤーエラーの自動復旧 | なし | あり | あり | なし |
 
-## Player Stability
+## プレイヤーの安定性
 
-| Feature | Release | Testing | TTV-AB | pixeltris |
+| 機能 | Release | Testing | TTV-AB | pixeltris |
 |---|---|---|---|---|
-| Visibility/hidden override | Yes | Yes | Yes | Yes |
-| hasFocus override | Yes | Yes | No | No |
-| Tab focus auto-play | Yes | Yes | Yes | Muted only |
-| Auto-resume on tab return | Yes (muted+unmuted) | Yes (muted+unmuted) | Yes | Muted only |
-| Buffering monitor | Yes | Yes | Yes | Yes |
-| Stuck-pause auto-recovery | Yes | Yes | No | No |
-| CSAI cascade reload cooldown | Yes | Yes | No | No |
-| CSAI-only skip reload | Yes | Yes | No | No |
-| Ad-end grace period | Yes | Yes | No | No |
-| Auto-escalate cooldown | Yes | Yes | No | No |
-| Backup switch grace (10s) | Yes | Yes | No | No |
-| One-reload-per-recovery cap | Yes | Yes | Yes (guarded) | No |
-| Reload grace period (15s) | Yes | Yes | No | No |
-| Visibility-aware poll backoff | Yes (3×) | Yes (3×) | Yes | No |
-| Smooth drift correction | Yes (1.1×) | Yes (1.1×) | No | No |
-| Failed backup type retry (15s) | Yes | Yes | No | No |
-| Quality/volume restore | Yes | Yes | Yes | Yes |
-| User pause intent tracking | Yes | Yes | Yes | No |
-| Fresh player lookup every tick | Yes | Yes | No | No |
-| React fallback discovery | Yes | Yes | No | No |
-| Seek past buffer gaps | Yes | Yes | No | No |
-| Position jump drift correction | Yes | Yes | No | No |
-| Stale event filtering | No | No | Yes | No |
-| Worker crash recovery | Yes | Yes | Yes | No |
+| visibility / hidden の上書き | あり | あり | あり | あり |
+| hasFocus の上書き | あり | あり | なし | なし |
+| タブのフォーカス時の自動再生 | あり | あり | あり | ミュート時のみ |
+| タブに戻った際の自動再開 | あり（ミュート / 非ミュート両方） | あり（ミュート / 非ミュート両方） | あり | ミュート時のみ |
+| バッファリング監視 | あり | あり | あり | あり |
+| 一時停止したまま固まった場合の自動復旧 | あり | あり | なし | なし |
+| CSAI 連鎖に対する再読み込みクールダウン | あり | あり | なし | なし |
+| CSAI のみの場合は再読み込みを省略 | あり | あり | なし | なし |
+| 広告終了後の猶予期間 | あり | あり | なし | なし |
+| クールダウンの自動延長 | あり | あり | なし | なし |
+| バックアップ切り替え時の猶予（10 秒） | あり | あり | なし | なし |
+| 復旧ごとの再読み込み 1 回上限 | あり | あり | あり（条件付き） | なし |
+| 再読み込みの猶予期間（15 秒） | あり | あり | なし | なし |
+| 可視状態に応じたポーリング間隔の調整 | あり（3 倍） | あり（3 倍） | あり | なし |
+| なめらかなドリフト補正 | あり（1.1 倍） | あり（1.1 倍） | なし | なし |
+| 失敗したバックアップタイプの再試行（15 秒） | あり | あり | なし | なし |
+| 画質 / 音量の復元 | あり | あり | あり | あり |
+| ユーザーの一時停止意図の追跡 | あり | あり | あり | なし |
+| 毎ティックでのプレイヤー再取得 | あり | あり | なし | なし |
+| React 経由のフォールバック探索 | あり | あり | なし | なし |
+| バッファの空白を越えたシーク | あり | あり | なし | なし |
+| 位置飛びに対するドリフト補正 | あり | あり | なし | なし |
+| 古いイベントのフィルタリング | なし | なし | あり | なし |
+| ワーカークラッシュからの復旧 | あり | あり | あり | なし |
 
-## Configuration
+## 設定
 
-| Feature | Release | Testing | TTV-AB | pixeltris |
+| 機能 | Release | Testing | TTV-AB | pixeltris |
 |---|---|---|---|---|
-| ReloadPlayerAfterAd | Yes | Yes | N/A | Hardcoded |
-| ForceAccessTokenPlayerType | Yes | Yes | N/A | Hardcoded |
-| PinBackupPlayerType | Yes | Yes | Always on | No |
-| HideAdOverlay | Yes | Yes | N/A | No |
-| ReloadCooldownSeconds | Yes | Yes | N/A | No |
-| DisableReloadCap | Yes | Yes | N/A | No |
-| DriftCorrectionRate | Yes | Yes | N/A | No |
-| PreferLowQualityBackup (hybrid safety net) | Yes | Yes | N/A | No |
-| BackupSwapFirst (TTV-AB-style default) | Yes (default on) | Yes (default on) | N/A (always on) | No |
-| Config logged on load | Yes | Yes | No | No |
+| ReloadPlayerAfterAd | あり | あり | 該当なし | ハードコード |
+| ForceAccessTokenPlayerType | あり | あり | 該当なし | ハードコード |
+| PinBackupPlayerType | あり | あり | 常時有効 | なし |
+| HideAdOverlay | あり | あり | 該当なし | なし |
+| ReloadCooldownSeconds | あり | あり | 該当なし | なし |
+| DisableReloadCap | あり | あり | 該当なし | なし |
+| DriftCorrectionRate | あり | あり | 該当なし | なし |
+| PreferLowQualityBackup（ハイブリッドな安全策） | あり | あり | 該当なし | なし |
+| BackupSwapFirst（TTV-AB 方式、デフォルト） | あり（デフォルト有効） | あり（デフォルト有効） | 該当なし（常時有効） | なし |
+| 読み込み時に設定をログ出力 | あり | あり | なし | なし |
 
-## Debug Logging
+## デバッグログ
 
-| Feature | Release | Testing | TTV-AB | pixeltris |
+| 機能 | Release | Testing | TTV-AB | pixeltris |
 |---|---|---|---|---|
-| AD DEBUG breakpoints | Yes (15+) | Yes (15+) | Minimal | No |
-| Worker rejection logging | Yes | Yes | No | No |
-| GQL header capture log | Yes | Yes | No | No |
-| Stripped segment count | Yes | Yes | No | No |
+| AD DEBUG のログポイント | あり（15 か所以上） | あり（15 か所以上） | 最小限 | なし |
+| ワーカー拒否のログ | あり | あり | なし | なし |
+| GQL ヘッダー取得のログ | あり | あり | なし | なし |
+| 除去したセグメント数 | あり | あり | なし | なし |
 
-## Hardening
+## 堅牢化
 
-| Feature | Release | Testing | TTV-AB | pixeltris |
+| 機能 | Release | Testing | TTV-AB | pixeltris |
 |---|---|---|---|---|
-| parseAttributes null guard | Yes | Yes | No | No |
-| Blob URL revoke protection | Yes | Yes | No | No |
-| Worker prototype chain cleanup | Yes | Yes | No | No |
-| GQL fetch timeout (15s) | Yes | Yes | No | No |
-| WASM worker JS cache | Yes | Yes | No | No |
-| Stream info TTL cleanup | Yes | Yes | No | No |
-| Dictionary objects (no prototype) | Yes | Yes | No | No |
+| parseAttributes の null ガード | あり | あり | なし | なし |
+| Blob URL の revoke 保護 | あり | あり | なし | なし |
+| ワーカーのプロトタイプチェーン整理 | あり | あり | なし | なし |
+| GQL の fetch タイムアウト（15 秒） | あり | あり | なし | なし |
+| WASM ワーカー JS のキャッシュ | あり | あり | なし | なし |
+| ストリーム情報の TTL によるクリーンアップ | あり | あり | なし | なし |
+| 辞書オブジェクト（プロトタイプなし） | あり | あり | なし | なし |
 
-## Null Safety
+## null 安全性
 
-| Feature | Release | Testing | TTV-AB | pixeltris |
+| 機能 | Release | Testing | TTV-AB | pixeltris |
 |---|---|---|---|---|
-| Optional chaining | Yes | Yes | Yes | No |
-| GQL response validation | Yes | Yes | Yes | No |
-| parseAttributes tag prefix strip | Yes | Yes | No | No |
-| GQL response shape fallback (data wrap + flat) | Yes | Yes | Yes | No |
-| GQL error field in diagnostic log | Yes | Yes | No | No |
-| Worker-bridge Response full shape (url/ok/redirected/type) | Yes | Yes | N/A | No |
+| オプショナルチェーン | あり | あり | あり | なし |
+| GQL レスポンスの検証 | あり | あり | あり | なし |
+| parseAttributes のタグ接頭辞の除去 | あり | あり | なし | なし |
+| GQL レスポンス形状のフォールバック（data ラップ + フラット） | あり | あり | あり | なし |
+| 診断ログへの GQL エラーフィールドの記録 | あり | あり | なし | なし |
+| ワーカーブリッジの Response 完全形状（url / ok / redirected / type） | あり | あり | 該当なし | なし |
 
-## Compatibility
+## 対応環境
 
-| Feature | Release | Testing | TTV-AB | pixeltris |
+| 機能 | Release | Testing | TTV-AB | pixeltris |
 |---|---|---|---|---|
-| WebKit/iOS | Yes | Yes | N/A | Yes |
-| Firefox | Yes | Yes | Yes | Yes |
-| Chrome | Yes | Yes | Yes | Yes |
+| WebKit / iOS | あり | あり | 該当なし | あり |
+| Firefox | あり | あり | あり | あり |
+| Chrome | あり | あり | あり | あり |

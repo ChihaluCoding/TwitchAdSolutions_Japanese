@@ -94,6 +94,7 @@
         scope.RecoverFromSilentMute = true;// ハード再読み込みの際、要素がすでにミュートされていても、そのセッション中に vaft が一度でもミュート解除に成功していれば、Twitch による静かな再ミュートとみなして最終防衛線で復旧する。デフォルトで有効。無効にするには twitchAdSolutions_recoverFromSilentMute=false を設定する（セッションの途中で意図的にミュートするユーザー向け）。
         scope.SoftReloadNoStrip = true;// issue #129（モード D）: 広告でセグメントが 1 つも除去されなかった場合（BackupSwapFirst による CSAI の切り替え）、広告後の再読み込みにソフト再読み込みを使う。ハード再読み込みによる MediaSource のフラッシュが必要なのは除去による注入（BLANK_MP4 / 復旧）の後だけで、除去のない広告では、デスクトップでの黒画面 + 再生アイコンを伴う破棄のコストを無駄に払うことになる。デフォルトで有効。常にハードだった従来の挙動に戻すには twitchAdSolutions_softReloadNoStrip=false を設定する。
         scope.DisablePostBreakWedge = false;// 広告終了後の映像の詰まりからの復旧（GosuDRM/TTV-AB の _checkPostBreakWedge、v12.0.0 に準拠）。広告の後の「音声は流れているのに映像がフリーズする」状態（再生位置は進むのにデコーダーが新しいフレームを出さない状態）を、currentTime を基準にしたフリーズ判定では見えない getVideoPlaybackQuality().totalVideoFrames によって検出する。デフォルトで有効。無効にするには twitchAdSolutions_disablePostBreakWedge=true を設定する。
+        scope.AutoPlayOnPause = true;// プレイヤーが一時停止状態になったら自動で再生を再開する。ユーザー自身の一時停止（playerBufferState.userPauseIntent）は尊重されるため、手動で止めた場合は再生されない。Twitch 側の再生 / 一時停止ボタンの data-a-player-state="paused" を監視し、video 要素がまだ存在しないページ読み込み中でも復帰できる。無効にするには twitchAdSolutions_autoPlayOnPause=false を設定する。
         scope.SkipPlayerReloadOnHevc = false;// true にすると 2K / 4K の画質があるストリームでプレイヤーの再読み込みを省略する（これを有効にしたうえで 2K / 4K の画質設定を使うと、Chromium 系のブラウザでエラー #4000 / #3000 や読み込み中の回転表示が発生する）
         scope.AlwaysReloadPlayerOnAd = false;// 広告の開始時と終了時に必ず一時停止 / 再生を行う
         scope.ReloadPlayerAfterAd = true;// 広告の終了後、一時停止 / 再生ではなくプレイヤーの再読み込みを行う
@@ -2252,6 +2253,8 @@
         // 一部のオーバーレイは独自のライフサイクルを持ち、その後も表示され続ける。
         // 監視の毎ティック（1〜3 秒間隔）でここを実行すれば、専用のインターバルを設けずに非表示を維持できる。
         try { hideTwitchAdOverlays(); } catch {}
+        // 属性の監視を取りこぼした場合の保険。監視の毎ティックで一時停止を拾い直す。
+        try { autoPlayIfPaused('バッファ監視'); } catch {}
         // 可視状態に応じたバックオフ: タブが非表示のときはポーリングを 3 分の 1 の頻度にする（ただし PiP 中は除く。ユーザーは視聴中のため）。
         // 例外: 広告中はバックオフしない。非表示タブでの復旧（バックアップ探索 → 再読み込み）はブラウザのタイマー抑制で
         // すでに遅くなっており、3 倍のバックオフはバックグラウンドのタブで広告が始まったときの
@@ -2260,6 +2263,44 @@
         const shouldThrottle = typeof document !== 'undefined' && document.hidden && !document.pictureInPictureElement && !playerBufferState.inAdBreak;
         const nextDelay = shouldThrottle ? PlayerBufferingDelay * 3 : PlayerBufferingDelay;
         setTimeout(monitorPlayerBuffering, nextDelay);
+    }
+    // 一時停止からの自動復帰。Twitch 側の再生 / 一時停止ボタンを直接押す。
+    // video.play() は自動再生のポリシーで拒否されることがあるが、ボタンのクリックは
+    // Twitch 自身のハンドラを通るため成功しやすい。
+    let lastAutoPlayClickAt = 0;
+    const AutoPlayClickCooldown = 1500;
+    function autoPlayIfPaused(reason) {
+        if (!AutoPlayOnPause) return;
+        // ユーザーが自分で止めた場合は尊重する（vaft の既存の判定を共有する）
+        if (playerBufferState.userPauseIntent) return;
+        // 広告の処理中は vaft 側の切り替え / 再読み込みに任せる
+        if (isActivelyStrippingAds || playerBufferState.inAdBreak) return;
+        // 再読み込み / バックアップへの切り替えの直後は、vaft 自身が再生を復帰させる
+        if (playerBufferState.weJustPaused && (Date.now() - playerBufferState.weJustPaused) < 3000) return;
+        if (playerBufferState.lastReloadAt && (Date.now() - playerBufferState.lastReloadAt) < 5000) return;
+        // data-a-player-state を見ないと、再生中のボタン（＝一時停止ボタン）を押して逆に止めてしまう
+        const button = document.querySelector('[data-a-target="player-play-pause-button"][data-a-player-state="paused"]');
+        if (!button) return;
+        // Twitch 側が状態を更新する前に連打しないようにする
+        if (Date.now() - lastAutoPlayClickAt < AutoPlayClickCooldown) return;
+        lastAutoPlayClickAt = Date.now();
+        console.log('[AD DEBUG] 一時停止を検出したため再生ボタンを押しました（' + reason + '）');
+        try { button.click(); } catch {}
+    }
+    // ページの読み込み中（video 要素がまだ存在しない段階）でも押せるように、
+    // ボタンの状態の変化を属性の監視で拾う。
+    function hookAutoPlayObserver() {
+        if (!AutoPlayOnPause || hookAutoPlayObserver.hooked) return;
+        hookAutoPlayObserver.hooked = true;
+        try {
+            new MutationObserver(() => autoPlayIfPaused('DOM の変化')).observe(document.documentElement, {
+                childList: true,
+                subtree: true,
+                attributes: true,
+                attributeFilter: ['data-a-player-state']
+            });
+            autoPlayIfPaused('初期化');
+        } catch {}
     }
     // すでに広告をブロックしている場合は、Twitch の広告 / Turbo 宣伝 / 配信内ディスプレイ広告のオーバーレイを非表示にする
     function hideTwitchAdOverlays() {
@@ -2918,6 +2959,11 @@
             DisablePostBreakWedge = true;
             console.log('[AD DEBUG] 広告終了後の映像の詰まりからの復旧が localStorage で無効化されています — 広告後に音声のみ動作し映像がフリーズした状態は自動復旧されません');
         }
+        const lsAutoPlayOnPause = localStorage.getItem('twitchAdSolutions_autoPlayOnPause');
+        if (lsAutoPlayOnPause === 'false') {
+            AutoPlayOnPause = false;
+            console.log('[AD DEBUG] AutoPlayOnPause が localStorage で無効化されています — 一時停止からの自動復帰は行いません');
+        }
         const lsHideAdOverlay = localStorage.getItem('twitchAdSolutions_hideAdOverlay');
         if (lsHideAdOverlay === 'true') {
             const style = document.createElement('style');
@@ -2944,6 +2990,8 @@
     if (PlayerBufferingFix) {
         monitorPlayerBuffering();
     }
+    // ページの読み込み中の一時停止も拾えるように、ここで監視を開始する（document-start のため documentElement は存在する）
+    hookAutoPlayObserver();
     if (document.readyState === "complete" || document.readyState === "interactive") {
         onContentLoaded();
     } else {

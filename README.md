@@ -1,124 +1,124 @@
-Originally forked from [pixeltris/TwitchAdSolutions](https://github.com/pixeltris/TwitchAdSolutions) (archived).
+元は [pixeltris/TwitchAdSolutions](https://github.com/pixeltris/TwitchAdSolutions)（アーカイブ済み）からフォークしたものです。
 
-*English / [日本語](README.ja.md)*
+*[English](README.md) / 日本語*
 
 # TwitchAdSolutions
 
-This repo aims to provide multiple solutions for blocking Twitch ads.
+このリポジトリは、Twitch の広告をブロックするための複数の手段を提供することを目的としています。
 
-**Don't combine Twitch specific ad blockers.**
+**Twitch 専用の広告ブロッカーを併用しないでください。**
 
-## Recommendations
+## 推奨
 
-Proxies are the most reliable way of avoiding ads ([buffering / downtime info](full-list.md#proxy-issues)).
+広告を回避する最も確実な方法はプロキシです（[バッファリング / ダウンタイムについて](full-list.ja.md#プロキシの問題)）。
 
-- `TTV LOL PRO` - [chrome](https://chrome.google.com/webstore/detail/ttv-lol-pro/bpaoeijjlplfjbagceilcgbkcdjbomjd) / [firefox](https://addons.mozilla.org/addon/ttv-lol-pro/) / [code](https://github.com/younesaassila/ttv-lol-pro)
+- `TTV LOL PRO` - [chrome](https://chrome.google.com/webstore/detail/ttv-lol-pro/bpaoeijjlplfjbagceilcgbkcdjbomjd) / [firefox](https://addons.mozilla.org/addon/ttv-lol-pro/) / [コード](https://github.com/younesaassila/ttv-lol-pro)
 
-Alternatively:
+その他の選択肢:
 
 - `Twitch Turbo` - https://www.twitch.tv/turbo
 - `Alternate Player for Twitch.tv` - [chrome](https://chrome.google.com/webstore/detail/alternate-player-for-twit/bhplkbgoehhhddaoolmakpocnenplmhf) / [firefox](https://addons.mozilla.org/en-US/firefox/addon/twitch_5/)
-- `AdGuard Extra` - [chrome](https://chrome.google.com/webstore/detail/adguard-extra-beta/mglpocjcjbekdckiahfhagndealpkpbj) / [firefox](https://github.com/AdguardTeam/AdGuardExtra/#firefox) / [userscript](https://userscripts.adtidy.org/release/adguard-extra/1.0/adguard-extra.user.js)
-- `vaft` - see below
+- `AdGuard Extra` - [chrome](https://chrome.google.com/webstore/detail/adguard-extra-beta/mglpocjcjbekdckiahfhagndealpkpbj) / [firefox](https://github.com/AdguardTeam/AdGuardExtra/#firefox) / [ユーザースクリプト](https://userscripts.adtidy.org/release/adguard-extra/1.0/adguard-extra.user.js)
+- `vaft` - 下記参照
 
-[Read this for a full list and descriptions.](full-list.md)
+[すべての一覧と説明はこちら。](full-list.ja.md)
 
-[Also see this list maintained by @zGato.](https://github.com/zGato/ScrewTwitchAds)
+[@zGato がメンテナンスしているこちらの一覧も参照してください。](https://github.com/zGato/ScrewTwitchAds)
 
-## Scripts
+## スクリプト
 
-**There are better / easier to use methods in the above recommendations.**
+**上記の推奨手段の方が優れており、導入も簡単です。**
 
-- vaft - [userscript](https://github.com/ryanbr/TwitchAdSolutions/raw/master/vaft/vaft.user.js) / [ublock](https://raw.githubusercontent.com/ryanbr/TwitchAdSolutions/master/vaft/vaft-ublock-origin.js) / [ublock (permalink)](https://raw.githubusercontent.com/ryanbr/TwitchAdSolutions/232c5e95f915ccf59eac175044bb19ad24f84227/vaft/vaft-ublock-origin.js)
-  - Attempts to get a clean stream as fast as it can
-  - If it fails to get a clean stream it removes ad segments (no playback until ad-free stream is found)
-- video-swap-new - [userscript](https://github.com/ryanbr/TwitchAdSolutions/raw/master/video-swap-new/video-swap-new.user.js) / [ublock](https://raw.githubusercontent.com/ryanbr/TwitchAdSolutions/master/video-swap-new/video-swap-new-ublock-origin.js) / [ublock (permalink)](https://raw.githubusercontent.com/ryanbr/TwitchAdSolutions/232c5e95f915ccf59eac175044bb19ad24f84227/video-swap-new/video-swap-new-ublock-origin.js)
-  - Attempts to get a clean stream
-  - If it fails to get a clean stream it removes ad segments (no playback until ad-free stream is found)
-  - Not recommended, `vaft` is a better script
+- vaft - [ユーザースクリプト](https://github.com/ryanbr/TwitchAdSolutions/raw/master/vaft/vaft.user.js) / [ublock](https://raw.githubusercontent.com/ryanbr/TwitchAdSolutions/master/vaft/vaft-ublock-origin.js) / [ublock（パーマリンク）](https://raw.githubusercontent.com/ryanbr/TwitchAdSolutions/232c5e95f915ccf59eac175044bb19ad24f84227/vaft/vaft-ublock-origin.js)
+  - できるだけ早くクリーンなストリームの取得を試みます
+  - クリーンなストリームを取得できない場合は広告セグメントを除去します（広告のないストリームが見つかるまで再生されません）
+- video-swap-new - [ユーザースクリプト](https://github.com/ryanbr/TwitchAdSolutions/raw/master/video-swap-new/video-swap-new.user.js) / [ublock](https://raw.githubusercontent.com/ryanbr/TwitchAdSolutions/master/video-swap-new/video-swap-new-ublock-origin.js) / [ublock（パーマリンク）](https://raw.githubusercontent.com/ryanbr/TwitchAdSolutions/232c5e95f915ccf59eac175044bb19ad24f84227/video-swap-new/video-swap-new-ublock-origin.js)
+  - クリーンなストリームの取得を試みます
+  - クリーンなストリームを取得できない場合は広告セグメントを除去します（広告のないストリームが見つかるまで再生されません）
+  - 非推奨です。`vaft` の方が優れたスクリプトです
 
-## Applying a script (uBlock Origin)
+## スクリプトの適用方法（uBlock Origin）
 
-- Navigate to the uBlock Origin Dashboard (the extension options)
-- Under the `My filters` tab add `twitch.tv##+js(twitch-videoad)`.
-- Under the `Settings` tab, enable `I am an advanced user`, then click the cog that appears. Modify the value of `userResourcesLocation` from `unset` to the full url of the solution you wish to use (if a url is already in use, add a space after the existing url). e.g. `userResourcesLocation https://raw.githubusercontent.com/ryanbr/TwitchAdSolutions/master/vaft/vaft-ublock-origin.js` 
-- To ensure uBlock Origin loads the script I recommend that you disable/enable the uBlock Origin extension (or restart your browser).
+- uBlock Origin のダッシュボード（拡張機能のオプション）を開きます
+- `My filters`（自分のフィルター）タブで `twitch.tv##+js(twitch-videoad)` を追加します
+- `Settings`（設定）タブで `I am an advanced user`（上級者です）を有効にし、表示される歯車アイコンをクリックします。`userResourcesLocation` の値を `unset` から、使用したいソリューションの完全な URL に変更します（すでに URL が設定されている場合は、既存の URL の後にスペースを追加してから記述します）。例: `userResourcesLocation https://raw.githubusercontent.com/ryanbr/TwitchAdSolutions/master/vaft/vaft-ublock-origin.js`
+- uBlock Origin にスクリプトを確実に読み込ませるため、uBlock Origin 拡張機能の無効化 / 有効化（またはブラウザの再起動）を推奨します
 
-To stop using a script remove the filter and make the url `unset`.
+スクリプトの使用をやめるには、フィルターを削除し、URL を `unset` に戻します。
 
-*For the sake of security it's recommended to use a permalink when using uBlock Origin (permalinks do not auto update).*
+*セキュリティの観点から、uBlock Origin ではパーマリンクの使用を推奨します（パーマリンクは自動更新されません）。*
 
-*The scripts __may randomly stop being applied by uBlock Origin__ for unknown reasons ([#200](https://github.com/pixeltris/TwitchAdSolutions/issues/200)). It's recommended to use the userscript versions instead.*
+*スクリプトは__原因不明の理由で uBlock Origin から適用されなくなることがあります__（[#200](https://github.com/pixeltris/TwitchAdSolutions/issues/200)）。代わりにユーザースクリプト版の使用を推奨します。*
 
-## Applying a script (userscript)
+## スクリプトの適用方法（ユーザースクリプト）
 
-Viewing one of the userscript files should prompt the given script to be added when you have a userscript manager installed.
+ユーザースクリプトマネージャーをインストールした状態でユーザースクリプトのファイルを開くと、そのスクリプトの追加を求めるプロンプトが表示されます。
 
-Userscript managers:
+ユーザースクリプトマネージャー:
 
 - https://violentmonkey.github.io/
 - https://www.tampermonkey.net/
 - https://apps.apple.com/us/app/userscripts/id1463298887
 
-*Greasemonkey doesn't work with the scripts.*
+*Greasemonkey はこれらのスクリプトでは動作しません。*
 
-## Configuration
+## 設定
 
-The scripts support runtime configuration via `localStorage`. Set values in the browser console and refresh the page.
+スクリプトは `localStorage` による実行時設定に対応しています。ブラウザのコンソールで値を設定し、ページを再読み込みしてください。
 
-**`twitchAdSolutions_reloadPlayerAfterAd`** (default: `true`)
-- `true` - full player reload after ads (slower, more reliable)
-- `false` - pause/play after ads (faster, less reliable)
-- Not set - uses default (`true`)
+**`twitchAdSolutions_reloadPlayerAfterAd`**（デフォルト: `true`）
+- `true` - 広告後にプレイヤーを完全に再読み込みします（遅いが確実）
+- `false` - 広告後に一時停止 / 再生を行います（速いが確実性は低い）
+- 未設定 - デフォルト（`true`）を使用します
 
-**`twitchAdSolutions_playerType`** (default: `popout`)
-- Changes the player type used for access token requests
-- `popout` - popout player context, tends to receive fewer ads (default)
-- `embed` - embedded player context, used for third-party sites
-- `site` - normal site player, standard Twitch experience (most ads)
-- `autoplay` - autoplay context, lower quality (360p)
-- Not set - uses default (`popout`)
+**`twitchAdSolutions_playerType`**（デフォルト: `popout`）
+- アクセストークンのリクエストに使用するプレイヤータイプを変更します
+- `popout` - ポップアウトプレイヤーのコンテキスト。広告が少ない傾向があります（デフォルト）
+- `embed` - 埋め込みプレイヤーのコンテキスト。サードパーティサイトで使用されます
+- `site` - 通常のサイトプレイヤー。標準的な Twitch の挙動（広告が最も多い）
+- `autoplay` - 自動再生のコンテキスト。低画質（360p）
+- 未設定 - デフォルト（`popout`）を使用します
 
-**`twitchAdSolutions_hideAdOverlay`** (default: not set)
-- `true` - hide the ad-blocking banner overlay on the video player (the scripts render it in Japanese: 「広告をブロック中」)
-- Not set - banner is visible during ad blocking (default)
+**`twitchAdSolutions_hideAdOverlay`**（デフォルト: 未設定）
+- `true` - 動画プレイヤー上の「広告をブロック中」バナーオーバーレイを非表示にします
+- 未設定 - 広告ブロック中にバナーを表示します（デフォルト）
 
-**`twitchAdSolutions_pinBackupPlayerType`** (default: `false`)
-- `true` - remember which backup player type worked and try it first on next ad break (saves backup search time)
-- `false` - always iterate through backup types fresh (default)
-- ⚠ **Quality caveat**: if the pinned type is `autoplay`, backups during ad breaks stay at 360p even when a source-quality backup would have worked. Only enable if you prefer consistent ad-break experience over backup quality.
+**`twitchAdSolutions_pinBackupPlayerType`**（デフォルト: `false`）
+- `true` - 成功したバックアップのプレイヤータイプを記憶し、次回の広告時に最初に試します（バックアップ探索の時間を短縮）
+- `false` - 常にバックアップタイプを最初から順に試します（デフォルト）
+- ⚠ **画質に関する注意**: 記憶されたタイプが `autoplay` の場合、ソース画質のバックアップが利用できたはずの場面でも、広告中のバックアップが 360p のままになります。バックアップの画質よりも広告時の挙動の一貫性を優先する場合のみ有効にしてください。
 
-**`twitchAdSolutions_reloadCooldownSeconds`** (default: `30`)
-- Minimum seconds between player reloads after ad breaks
-- Prevents CSAI (client-side ad insertion) cascades where a reload triggers Twitch to serve another ad
-- Set to `0` to disable cooldown
+**`twitchAdSolutions_reloadCooldownSeconds`**（デフォルト: `30`）
+- 広告後のプレイヤー再読み込みの最小間隔（秒）
+- 再読み込みが引き金となって Twitch がさらに広告を配信する CSAI（クライアントサイド広告挿入）の連鎖を防ぎます
+- `0` に設定するとクールダウンを無効化します
 
-**`twitchAdSolutions_disableReloadCap`** (default: not set)
-- `true` - buffer monitor reloads unlimited times (pre-v47 behavior, risk of reload loops)
-- Not set - buffer monitor reloads at most once per recovery window (default)
-- Only enable if you're seeing genuinely stuck playback that a single reload doesn't fix
+**`twitchAdSolutions_disableReloadCap`**（デフォルト: 未設定）
+- `true` - バッファ監視による再読み込みを無制限に行います（v47 以前の挙動。再読み込みループのリスクあり）
+- 未設定 - バッファ監視による再読み込みを復旧ウィンドウごとに最大 1 回に制限します（デフォルト）
+- 1 回の再読み込みでは解消しない、本当に停止した再生が発生している場合のみ有効にしてください
 
-**`twitchAdSolutions_preferLowQualityBackup`** (default: `true`, vaft only)
-- Hybrid safety net for SSAI-heavy ad breaks. Adds `autoplay` (360p) as a last-resort backup when all Source types (site/popout/mobile_web/embed) are ad-laden. Also enables the sticky escape hatch (~8s stuck → fall through to backup search) when `twitchAdSolutions_backupSwapFirst=false`.
-- Set to `false` to disable the autoplay fallback and escape hatch
-- ⚠ **Quality caveat**: autoplay only commits when every Source backup is also ad-laden — rare, but the 360p hit is the tradeoff for avoiding long freezes on SSAI-heavy channels
+**`twitchAdSolutions_preferLowQualityBackup`**（デフォルト: `true`、vaft のみ）
+- SSAI が多い広告向けのハイブリッドな安全策です。すべての Source タイプ（site / popout / mobile_web / embed）に広告が含まれる場合の最終手段として `autoplay`（360p）をバックアップに追加します。また、`twitchAdSolutions_backupSwapFirst=false` のときにスティッキーな脱出手段（約 8 秒停止でバックアップ探索へ移行）を有効にします。
+- `false` に設定すると autoplay へのフォールバックと脱出手段を無効化します
+- ⚠ **画質に関する注意**: autoplay が採用されるのはすべての Source バックアップにも広告が含まれる場合のみで、まれではありますが、SSAI が多いチャンネルでの長時間のフリーズを避けるための代償として 360p になります
 
-**`twitchAdSolutions_backupSwapFirst`** (default: `true`, vaft only)
-- **Default ad-blocking path** (as of v63.0.0). On ad detect, immediately swap to a backup player-type m3u8 (site → popout → mobile_web → embed, first clean wins). Avoids the MediaSource mixing that the legacy strip+BLANK_MP4+recovery path produces — fewer loading circles and no A/V desync accumulation.
-- Set to `false` to revert to the legacy sticky CSAI strip-first path. Use this if you're on a channel/network where backup fetches are unreliable and stripping native is preferable.
-- ⚠ **Bandwidth tradeoff**: extra token fetch on every ad break (~400ms first time per session, much less after `BackupEncodingsM3U8Cache` warms up).
+**`twitchAdSolutions_backupSwapFirst`**（デフォルト: `true`、vaft のみ）
+- **デフォルトの広告ブロック経路**です（v63.0.0 以降）。広告を検出すると、すぐにバックアップのプレイヤータイプの m3u8 に切り替えます（site → popout → mobile_web → embed の順で、最初にクリーンだったものを採用）。従来の strip + BLANK_MP4 + リカバリ経路で発生する MediaSource の混在を回避し、ローディング表示が減り、音ズレの蓄積もなくなります。
+- `false` に設定すると、従来のスティッキーな CSAI ストリップ優先の経路に戻ります。バックアップの取得が不安定なチャンネル / ネットワークで、ネイティブのストリップの方が望ましい場合に使用してください。
+- ⚠ **帯域に関するトレードオフ**: 広告のたびに追加のトークン取得が発生します（セッション内で初回は約 400ms、`BackupEncodingsM3U8Cache` が温まった後はさらに短くなります）。
 
 ```js
-// Faster post-ad transition
+// 広告後の切り替えを高速化
 localStorage.setItem('twitchAdSolutions_reloadPlayerAfterAd', 'false');
 
-// Change player type
+// プレイヤータイプを変更
 localStorage.setItem('twitchAdSolutions_playerType', 'embed');
 
-// Hide ad blocking banner
+// 広告ブロックのバナー（「広告をブロック中」）を非表示
 localStorage.setItem('twitchAdSolutions_hideAdOverlay', 'true');
 
-// Restore defaults
+// デフォルトに戻す
 localStorage.removeItem('twitchAdSolutions_reloadPlayerAfterAd');
 localStorage.removeItem('twitchAdSolutions_playerType');
 localStorage.removeItem('twitchAdSolutions_hideAdOverlay');
@@ -129,14 +129,14 @@ localStorage.removeItem('twitchAdSolutions_preferLowQualityBackup');
 localStorage.removeItem('twitchAdSolutions_backupSwapFirst');
 ```
 
-## Known Extension Conflicts
+## 既知の拡張機能との競合
 
-- **7TV** — may cause black screen / infinite buffering ([#17](https://github.com/ryanbr/TwitchAdSolutions/issues/17))
-- **TwitchNoSub** — handled automatically via workerStringReinsert, but older versions may conflict
-- **TTV-AB** — running both simultaneously may cause duplicate ad blocking and errors. Use one or the other.
-- **Purple AdBlock** — may conflict if both are active. Disable one.
-- **AdGuard Extra** — operates at a different layer, can be used alongside without conflict
+- **7TV** — 黒画面 / 無限バッファリングが発生する場合があります（[#17](https://github.com/ryanbr/TwitchAdSolutions/issues/17)）
+- **TwitchNoSub** — workerStringReinsert により自動的に処理されますが、古いバージョンでは競合する可能性があります
+- **TTV-AB** — 同時に実行すると広告ブロックが二重に行われ、エラーの原因になります。どちらか一方を使用してください。
+- **Purple AdBlock** — 両方が有効だと競合する可能性があります。どちらかを無効にしてください。
+- **AdGuard Extra** — 異なるレイヤーで動作するため、併用しても競合しません
 
-## Issues with the scripts
+## スクリプトの不具合について
 
-If the script doesn't work or you're experiencing freezing / buffering issues see [issues.md](issues.md)
+スクリプトが動作しない場合や、フリーズ / バッファリングの問題が発生する場合は [issues.md](issues.md) を参照してください。
