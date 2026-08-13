@@ -1,7 +1,3 @@
-元は [pixeltris/TwitchAdSolutions](https://github.com/pixeltris/TwitchAdSolutions)（アーカイブ済み）からフォークしたものです。
-
-*[English](README.md) / 日本語*
-
 # TwitchAdSolutions
 
 このリポジトリは、Twitch の広告をブロックするための複数の手段を提供することを目的としています。
@@ -137,6 +133,5 @@ localStorage.removeItem('twitchAdSolutions_backupSwapFirst');
 - **Purple AdBlock** — 両方が有効だと競合する可能性があります。どちらかを無効にしてください。
 - **AdGuard Extra** — 異なるレイヤーで動作するため、併用しても競合しません
 
-## スクリプトの不具合について
-
-スクリプトが動作しない場合や、フリーズ / バッファリングの問題が発生する場合は [issues.md](issues.md) を参照してください。
+### Original fork 
+[pixeltris/TwitchAdSolutions](https://github.com/pixeltris/TwitchAdSolutions)

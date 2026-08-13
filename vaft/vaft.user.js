@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         TwitchAdSolutions (vaft)
 // @namespace    https://github.com/ryanbr/TwitchAdSolutions
-// @version      68.5.1
+// @version      68.6.0
 // @description  Multiple solutions for blocking Twitch ads (vaft)
 // @updateURL    https://github.com/ryanbr/TwitchAdSolutions/raw/master/vaft/vaft.user.js
 // @downloadURL  https://github.com/ryanbr/TwitchAdSolutions/raw/master/vaft/vaft.user.js
@@ -46,7 +46,7 @@
         }
     }
     'use strict';
-    const ourTwitchAdSolutionsVersion = 87;// 古いバージョンのスクリプトとの競合を防ぐために使う
+    const ourTwitchAdSolutionsVersion = 88;// 古いバージョンのスクリプトとの競合を防ぐために使う
     console.log('[AD DEBUG] TwitchAdSolutions vaft v' + ourTwitchAdSolutionsVersion + ' を読み込んでいます');
     if (typeof window.twitchAdSolutionsVersion !== 'undefined' && window.twitchAdSolutionsVersion >= ourTwitchAdSolutionsVersion) {
         console.log('[AD DEBUG] 競合: vaft v' + ourTwitchAdSolutionsVersion + ' をスキップしました — 別のスクリプトがすでに有効です（v' + window.twitchAdSolutionsVersion + '）。重複するスクリプトを削除してください。');
