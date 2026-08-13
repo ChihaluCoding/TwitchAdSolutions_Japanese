@@ -133,5 +133,5 @@ localStorage.removeItem('twitchAdSolutions_backupSwapFirst');
 - **Purple AdBlock** — 両方が有効だと競合する可能性があります。どちらかを無効にしてください。
 - **AdGuard Extra** — 異なるレイヤーで動作するため、併用しても競合しません
 
-### Original fork 
+## Original fork 
 [pixeltris/TwitchAdSolutions](https://github.com/pixeltris/TwitchAdSolutions)
