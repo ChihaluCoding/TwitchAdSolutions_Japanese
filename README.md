@@ -1,12 +1,14 @@
-# TwitchAdSolutions
+# TwitchAdSolutions 日本語版
 
 このリポジトリは、Twitch の広告をブロックするための複数の手段を提供することを目的としています。
+
+[ryanbr/TwitchAdSolutions](https://github.com/ryanbr/TwitchAdSolutions)（原作: [pixeltris](https://github.com/pixeltris/TwitchAdSolutions)）の非公式な日本語版です。ログやコメントを日本語化したうえで、一時停止からの自動復帰機能を追加しています。
 
 **Twitch 専用の広告ブロッカーを併用しないでください。**
 
 ## 推奨
 
-広告を回避する最も確実な方法はプロキシです（[バッファリング / ダウンタイムについて](full-list.ja.md#プロキシの問題)）。
+広告を回避する最も確実な方法はプロキシです（ただしバッファリングやダウンタイムが発生することがあります）。
 
 - `TTV LOL PRO` - [chrome](https://chrome.google.com/webstore/detail/ttv-lol-pro/bpaoeijjlplfjbagceilcgbkcdjbomjd) / [firefox](https://addons.mozilla.org/addon/ttv-lol-pro/) / [コード](https://github.com/younesaassila/ttv-lol-pro)
 
@@ -17,27 +19,40 @@
 - `AdGuard Extra` - [chrome](https://chrome.google.com/webstore/detail/adguard-extra-beta/mglpocjcjbekdckiahfhagndealpkpbj) / [firefox](https://github.com/AdguardTeam/AdGuardExtra/#firefox) / [ユーザースクリプト](https://userscripts.adtidy.org/release/adguard-extra/1.0/adguard-extra.user.js)
 - `vaft` - 下記参照
 
-[すべての一覧と説明はこちら。](full-list.ja.md)
-
 [@zGato がメンテナンスしているこちらの一覧も参照してください。](https://github.com/zGato/ScrewTwitchAds)
 
-## スクリプト
+## インストール
 
-**上記の推奨手段の方が優れており、導入も簡単です。**
+**`vaft` を推奨します。** 下のリンクをクリックすると Tampermonkey のインストール画面が開きます。
 
-- vaft - [ユーザースクリプト](https://github.com/ryanbr/TwitchAdSolutions/raw/master/vaft/vaft.user.js) / [ublock](https://raw.githubusercontent.com/ryanbr/TwitchAdSolutions/master/vaft/vaft-ublock-origin.js) / [ublock（パーマリンク）](https://raw.githubusercontent.com/ryanbr/TwitchAdSolutions/232c5e95f915ccf59eac175044bb19ad24f84227/vaft/vaft-ublock-origin.js)
-  - できるだけ早くクリーンなストリームの取得を試みます
-  - クリーンなストリームを取得できない場合は広告セグメントを除去します（広告のないストリームが見つかるまで再生されません）
-- video-swap-new - [ユーザースクリプト](https://github.com/ryanbr/TwitchAdSolutions/raw/master/video-swap-new/video-swap-new.user.js) / [ublock](https://raw.githubusercontent.com/ryanbr/TwitchAdSolutions/master/video-swap-new/video-swap-new-ublock-origin.js) / [ublock（パーマリンク）](https://raw.githubusercontent.com/ryanbr/TwitchAdSolutions/232c5e95f915ccf59eac175044bb19ad24f84227/video-swap-new/video-swap-new-ublock-origin.js)
+### vaft（推奨）
+
+[**➡ ユーザースクリプトをインストール**](https://github.com/ChihaluCoding/TwitchAdSolutions_Japanese/raw/main/vaft/vaft.user.js)
+
+- できるだけ早くクリーンなストリームの取得を試みます
+- クリーンなストリームを取得できない場合は広告セグメントを除去します（広告のないストリームが見つかるまで再生されません）
+- 一時停止した際に自動で再生を再開します（本リポジトリ独自の追加機能）
+
+uBlock Origin 版: [vaft-ublock-origin.js](https://raw.githubusercontent.com/ChihaluCoding/TwitchAdSolutions_Japanese/main/vaft/vaft-ublock-origin.js)
+
+### その他
+
+- video-swap-new - [ユーザースクリプト](https://github.com/ChihaluCoding/TwitchAdSolutions_Japanese/raw/main/video-swap-new/video-swap-new.user.js) / [ublock](https://raw.githubusercontent.com/ChihaluCoding/TwitchAdSolutions_Japanese/main/video-swap-new/video-swap-new-ublock-origin.js)
   - クリーンなストリームの取得を試みます
-  - クリーンなストリームを取得できない場合は広告セグメントを除去します（広告のないストリームが見つかるまで再生されません）
+  - クリーンなストリームを取得できない場合は広告セグメントを除去します
   - 非推奨です。`vaft` の方が優れたスクリプトです
+- strip - [ユーザースクリプト](https://github.com/ChihaluCoding/TwitchAdSolutions_Japanese/raw/main/strip/strip.user.js)
+  - 広告セグメントを除去するだけの最小構成です。CSAI 広告には対応できないため非推奨です
+- twitch-brave-fix - [ユーザースクリプト](https://github.com/ChihaluCoding/TwitchAdSolutions_Japanese/raw/main/vaft/twitch-brave-fix.user.js)
+  - Brave ブラウザ向けの補助スクリプトです
+
+**複数のスクリプトを同時に入れないでください。** 競合して動作しなくなります。
 
 ## スクリプトの適用方法（uBlock Origin）
 
 - uBlock Origin のダッシュボード（拡張機能のオプション）を開きます
 - `My filters`（自分のフィルター）タブで `twitch.tv##+js(twitch-videoad)` を追加します
-- `Settings`（設定）タブで `I am an advanced user`（上級者です）を有効にし、表示される歯車アイコンをクリックします。`userResourcesLocation` の値を `unset` から、使用したいソリューションの完全な URL に変更します（すでに URL が設定されている場合は、既存の URL の後にスペースを追加してから記述します）。例: `userResourcesLocation https://raw.githubusercontent.com/ryanbr/TwitchAdSolutions/master/vaft/vaft-ublock-origin.js`
+- `Settings`（設定）タブで `I am an advanced user`（上級者です）を有効にし、表示される歯車アイコンをクリックします。`userResourcesLocation` の値を `unset` から、使用したいソリューションの完全な URL に変更します（すでに URL が設定されている場合は、既存の URL の後にスペースを追加してから記述します）。例: `userResourcesLocation https://raw.githubusercontent.com/ChihaluCoding/TwitchAdSolutions_Japanese/main/vaft/vaft-ublock-origin.js`
 - uBlock Origin にスクリプトを確実に読み込ませるため、uBlock Origin 拡張機能の無効化 / 有効化（またはブラウザの再起動）を推奨します
 
 スクリプトの使用をやめるには、フィルターを削除し、URL を `unset` に戻します。
@@ -99,6 +114,11 @@
 - `false` に設定すると autoplay へのフォールバックと脱出手段を無効化します
 - ⚠ **画質に関する注意**: autoplay が採用されるのはすべての Source バックアップにも広告が含まれる場合のみで、まれではありますが、SSAI が多いチャンネルでの長時間のフリーズを避けるための代償として 360p になります
 
+**`twitchAdSolutions_autoPlayOnPause`**（デフォルト: `true`、vaft のみ、本リポジトリ独自）
+- プレイヤーが一時停止状態になったら自動で再生を再開します。Twitch 側の再生ボタン（`data-a-player-state="paused"`）を監視するため、動画の要素がまだ存在しないページの読み込み中でも復帰できます。
+- ユーザー自身が一時停止した場合は尊重されるため、手動で止めたものが勝手に再生されることはありません。また、広告の処理中・再読み込みの直後・バックアップへの切り替え中は、広告ブロック側の復帰処理に任せて介入しません。
+- `false` に設定すると無効化されます。
+
 **`twitchAdSolutions_backupSwapFirst`**（デフォルト: `true`、vaft のみ）
 - **デフォルトの広告ブロック経路**です（v63.0.0 以降）。広告を検出すると、すぐにバックアップのプレイヤータイプの m3u8 に切り替えます（site → popout → mobile_web → embed の順で、最初にクリーンだったものを採用）。従来の strip + BLANK_MP4 + リカバリ経路で発生する MediaSource の混在を回避し、ローディング表示が減り、音ズレの蓄積もなくなります。
 - `false` に設定すると、従来のスティッキーな CSAI ストリップ優先の経路に戻ります。バックアップの取得が不安定なチャンネル / ネットワークで、ネイティブのストリップの方が望ましい場合に使用してください。
@@ -123,6 +143,7 @@ localStorage.removeItem('twitchAdSolutions_reloadCooldownSeconds');
 localStorage.removeItem('twitchAdSolutions_disableReloadCap');
 localStorage.removeItem('twitchAdSolutions_preferLowQualityBackup');
 localStorage.removeItem('twitchAdSolutions_backupSwapFirst');
+localStorage.removeItem('twitchAdSolutions_autoPlayOnPause');
 ```
 
 ## 既知の拡張機能との競合
@@ -133,5 +154,5 @@ localStorage.removeItem('twitchAdSolutions_backupSwapFirst');
 - **Purple AdBlock** — 両方が有効だと競合する可能性があります。どちらかを無効にしてください。
 - **AdGuard Extra** — 異なるレイヤーで動作するため、併用しても競合しません
 
-## Original fork 
+## Original fork
 [pixeltris/TwitchAdSolutions](https://github.com/pixeltris/TwitchAdSolutions)

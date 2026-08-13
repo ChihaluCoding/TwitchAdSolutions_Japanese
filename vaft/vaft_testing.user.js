@@ -1,10 +1,10 @@
 // ==UserScript==
-// @name         TwitchAdSolutions (vaft-testing)
-// @namespace    https://github.com/ryanbr/TwitchAdSolutions
+// @name         TwitchAdSolutions 日本語版 (vaft-testing)
+// @namespace    https://github.com/ChihaluCoding/TwitchAdSolutions_Japanese
 // @version      671.0.0
 // @description  Multiple solutions for blocking Twitch ads (vaft testing variant)
-// @updateURL    https://github.com/ryanbr/TwitchAdSolutions/raw/master/vaft/vaft_testing.user.js
-// @downloadURL  https://github.com/ryanbr/TwitchAdSolutions/raw/master/vaft/vaft_testing.user.js
+// @updateURL    https://github.com/ChihaluCoding/TwitchAdSolutions_Japanese/raw/main/vaft/vaft_testing.user.js
+// @downloadURL  https://github.com/ChihaluCoding/TwitchAdSolutions_Japanese/raw/main/vaft/vaft_testing.user.js
 // @author       https://github.com/cleanlock/VideoAdBlockForTwitch#credits
 // @match        *://*.twitch.tv/*
 // @run-at       document-start

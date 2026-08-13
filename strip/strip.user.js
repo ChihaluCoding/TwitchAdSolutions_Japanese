@@ -1,10 +1,10 @@
 // ==UserScript==
-// @name         TwitchAdSolutions (strip) - BAD, DON'T USE THIS
-// @namespace    https://github.com/ryanbr/TwitchAdSolutions
+// @name         TwitchAdSolutions 日本語版 (strip) - 非推奨
+// @namespace    https://github.com/ChihaluCoding/TwitchAdSolutions_Japanese
 // @version      1.9
 // @description  Multiple solutions for blocking Twitch ads (strip)
-// @updateURL    https://github.com/ryanbr/TwitchAdSolutions/raw/master/strip/strip.user.js
-// @downloadURL  https://github.com/ryanbr/TwitchAdSolutions/raw/master/strip/strip.user.js
+// @updateURL    https://github.com/ChihaluCoding/TwitchAdSolutions_Japanese/raw/main/strip/strip.user.js
+// @downloadURL  https://github.com/ChihaluCoding/TwitchAdSolutions_Japanese/raw/main/strip/strip.user.js
 // @author       pixeltris (original), ryanbr (fork)
 // @match        *://*.twitch.tv/*
 // @run-at       document-start
